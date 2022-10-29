@@ -1,14 +1,19 @@
 // This file must be in the /api folder for Vercel to detect it as a serverless function
-import type {Request, Response} from 'express';
+import type { Request, Response } from 'express';
 import express from 'express';
+import { engine } from 'express-handlebars';
 import session from 'express-session';
+import path from 'path';
 import logger from 'morgan';
 import http from 'http';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import * as userValidator from '../server/user/middleware';
-import {userRouter} from '../server/user/router';
-import {freetRouter} from '../server/freet/router';
+import { userRouter } from '../server/user/router';
+import { freetRouter } from '../server/freet/router';
+import { collectionDORouter } from '../server/collections/router';
+import { communityRouter } from '../server/communities/router';
+import { feedRouter } from '../server/feed/router';
 import MongoStore from 'connect-mongo';
 
 // Load environmental variables
@@ -70,6 +75,9 @@ app.use(userValidator.isCurrentSessionUserExists);
 // Add routers from routes folder
 app.use('/api/users', userRouter);
 app.use('/api/freets', freetRouter);
+app.use('/api/collections', collectionDORouter);
+app.use('/api/communities', communityRouter);
+app.use('/api/feed', feedRouter);
 
 // Catch all the other routes and display error message
 app.all('*', (req: Request, res: Response) => {
