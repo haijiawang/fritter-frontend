@@ -1,9 +1,10 @@
-import type {NextFunction, Request, Response} from 'express';
+import type { NextFunction, Request, Response } from 'express';
 import express from 'express';
 import FreetCollection from './collection';
 import * as userValidator from '../user/middleware';
 import * as freetValidator from '../freet/middleware';
 import * as util from './util';
+import * as collectionValidator from '../collections/middleware';
 
 const router = express.Router();
 
@@ -65,9 +66,22 @@ router.post(
     userValidator.isUserLoggedIn,
     freetValidator.isValidFreetContent
   ],
-  async (req: Request, res: Response) => {
+  async (req: Request, res: Response, next: NextFunction) => {
+    if (req.query.communityId !== undefined) {
+      next();
+      return;
+    }
     const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
     const freet = await FreetCollection.addOne(userId, req.body.content);
+
+    res.status(201).json({
+      message: 'Your freet was created successfully.',
+      freet: util.constructFreetResponse(freet)
+    });
+  },
+  async (req: Request, res: Response) => {
+    const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
+    const freet = await FreetCollection.addForum(userId, req.body.content, req.query.communityId as string);
 
     res.status(201).json({
       message: 'Your freet was created successfully.',
@@ -131,4 +145,52 @@ router.patch(
   }
 );
 
-export {router as freetRouter};
+/**
+ * Save a Freet to a Collection
+ * 
+ * @throws {403} - if the user is not logged in or not the author of
+ *                 of the freet
+ * @throws {404} - If the freetId is not valid
+ * @throws {404} - If the collectionId is not valid 
+ */
+router.put(
+  '/save/:freetId?/:collectionId?',
+  [
+    userValidator.isUserLoggedIn,
+    freetValidator.isFreetExists,
+    collectionValidator.isCollectionExists
+  ],
+  async (req: Request, res: Response) => {
+    const freet = await FreetCollection.saveFreetToCollection(req.params.collectionId, req.params.freetId);
+    res.status(200).json({
+      message: 'Your freet was saved successfully to the collection.',
+      collection: util.constructFreetResponse(freet)
+    });
+  }
+)
+
+/**
+ * Save a Freet to a Collection
+ * 
+ * @throws {403} - if the user is not logged in or not the author of
+ *                 of the freet
+ * @throws {404} - If the freetId is not valid
+ * @throws {404} - If the collectionId is not valid 
+ */
+router.put(
+  '/remove/:freetId?/:collectionId?',
+  [
+    userValidator.isUserLoggedIn,
+    freetValidator.isFreetExists,
+    collectionValidator.isCollectionExists
+  ],
+  async (req: Request, res: Response) => {
+    const freet = await FreetCollection.removeFreetFromCollection(req.params.collectionId, req.params.freetId);
+    res.status(200).json({
+      message: 'Your freet was remove successfully from the collection.',
+      collection: util.constructFreetResponse(freet)
+    });
+  }
+)
+
+export { router as freetRouter };
