@@ -7,6 +7,7 @@
         <h2>Welcome @{{ $store.state.username }}</h2>
       </header>
       <CreateFreetForm />
+      <CreateCollectionForm />
     </section>
     <section v-else>
       <header>
@@ -61,15 +62,33 @@
 <script>
 import FreetComponent from '@/components/Freet/FreetComponent.vue';
 import CreateFreetForm from '@/components/Freet/CreateFreetForm.vue';
+import CreateCollectionForm from '@/components/Freet/CreateCollectionForm.vue';
 import GetFreetsForm from '@/components/Freet/GetFreetsForm.vue';
 
 export default {
   name: 'FreetPage',
-  components: {FreetComponent, GetFreetsForm, CreateFreetForm},
+  components: {FreetComponent, GetFreetsForm, CreateFreetForm, CreateCollectionForm},
   mounted() {
     this.$refs.getFreetsForm.submit();
+    this.fetchCollections();
+  },
+  methods: {
+    async fetchCollections() {
+      const url = `/api/collections?userId=${this.$store.state.userId}`
+      try {
+        const r = await fetch(url);
+        const res = await r.json();
+        if (!r.ok) {
+          throw new Error(res.error);
+        }
+
+        this.$store.commit('updateCollections', res);
+      } catch(e) {}
+      console.log("here");
+    }
   }
 };
+
 </script>
 
 <style scoped>

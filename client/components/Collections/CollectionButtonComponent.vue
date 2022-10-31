@@ -1,91 +1,28 @@
-<!-- Reusable component representing a single freet and its actions -->
-<!-- We've tagged some elements with classes; consider writing CSS using those classes to style them... -->
+<!-- Reusable component representing a collection button -->
 
 <template>
   <article
-    class="freet"
+    class="CollectionButtonCompoment"
   >
-    <header>
-      <h3 class="author">
-        @{{ freet.author }}
-      </h3>
-      <div
-        v-if="$store.state.username === freet.author"
-        class="actions"
-      >
-        <button
-          v-if="editing"
-          @click="submitEdit"
-        >
-          ✅ Save changes
-        </button>
-        <button
-          v-if="editing"
-          @click="stopEditing"
-        >
-          🚫 Discard changes
-        </button>
-        <button
-          v-if="!editing"
-          @click="startEditing"
-        >
-          ✏️ Edit
-        </button>
-        <button @click="deleteFreet">
-          🗑️ Delete
-        </button>
-        <div class="dropdown">
-          <button class="dropbtn">🔖 Save</button>
-          <div class="dropdown-content">
-            <a 
-              v-for="collection in $store.state.collections"
-              :key="collection._id"
-              :data="collection.name"
-              @click="saveToCollection(collection._id)"
-            >
-              {{ collection.name }}
-            </a>
-          </div>
-        </div>
-      </div>
-    </header>
-    <textarea
-      v-if="editing"
-      class="content"
-      :value="draft"
-      @input="draft = $event.target.value"
-    />
-    <p
-      v-else
-      class="content"
+    <button
     >
-      {{ freet.content }}
-    </p>
-    <p class="info">
-      Posted at {{ freet.dateModified }}
-      <i v-if="freet.edited">(edited)</i>
-    </p>
-    <section class="alerts">
-      <article
-        v-for="(status, alert, index) in alerts"
-        :key="index"
-        :class="status"
-      >
-        <p>{{ alert }}</p>
-      </article>
-    </section>
+        🔖 {{ collection.name }}
+    </button>
   </article>
 </template>
 
 <script>
 export default {
-  name: 'FreetComponent',
+  name: 'CollectionButtonComponent',
   props: {
-    // Data from the stored freet
-    freet: {
+    // Data from the stored collection
+    collection: {
       type: Object,
       required: true
     }
+  },
+  mounted() {
+    console.log('hiiiiii'); 
   },
   data() {
     return {
@@ -198,43 +135,11 @@ export default {
 </script>
 
 <style scoped>
-.freet {
-    border: 1px solid #111;
-    padding: 20px;
-    position: relative;
-}
-
-/* Dropdown Button */
-.dropbtn {
-}
-
-/* The container <div> - needed to position the dropdown content */
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-/* Dropdown Content (Hidden by Default) */
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f1f1f1;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-}
-
-/* Links inside the dropdown */
-.dropdown-content a {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-}
-
-/* Change color of dropdown links on hover */
-.dropdown-content a:hover {background-color: #ddd;}
-
-/* Show the dropdown menu on hover */
-.dropdown:hover .dropdown-content {display: block;}
+     .CollectionButtonCompoment button {
+        height: 200px;
+        width: 200px;
+        padding: 20px;
+        text-align: center;
+        margin: 10px;
+    }
 </style>

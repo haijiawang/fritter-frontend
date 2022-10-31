@@ -68,14 +68,14 @@ const ownerExists = async (req: Request, res: Response, next: NextFunction) => {
  * Checks if collection name is valid
  */
 const isValidCollectionName = (req: Request, res: Response, next: NextFunction) => {
-  const { content } = req.body as { content: string };
-  if (!content) {
+  const { name } = req.body as { name: string };
+  if (!name) {
     res.status(400).json({
       error: 'Collection name must be at least one character long.'
     });
     return;
   }
-  if (!content.trim()) {
+  if (!name.trim()) {
     res.status(400).json({
       error: 'Collection name must be at least one character long.'
     });
