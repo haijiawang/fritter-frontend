@@ -117,13 +117,14 @@ export default {
 
 <style scoped>
 form {
-  border: 1px solid #111;
+  border: 1.8px solid rgba(101,119,134,0.5);
   padding: 0.5rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   margin-bottom: 14px;
   position: relative;
+  border-radius: 5px;
 }
 
 article > div {
@@ -138,10 +139,16 @@ form > article p {
 form h3,
 form > * {
   margin: 0.3em 0;
+  font-weight: 500;
 }
 
 form h3 {
   margin-top: 0;
+}
+
+form p {
+  font-weight: 400;
+  font-size: 15px;
 }
 
 textarea {

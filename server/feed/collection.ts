@@ -56,8 +56,8 @@ class FeedCollection {
         if (user.following == undefined) {
             user.following = [followerId.toString()];
         }
-        if (user.following.includes(userId.toString())) {
-            return;
+        if (user.following.includes(followerId.toString())) {
+            return user;
         }
         user.following.push(followerId.toString());
         await user.save()
@@ -71,6 +71,17 @@ class FeedCollection {
         user.following = userFollowing;
         await user.save()
         return user;
+    }
+
+    static async isFollowingUser(userId: Types.ObjectId | string, followerId: Types.ObjectId | string): Promise<Boolean> {
+        const user = await UserModel.findOne({ _id: userId });
+        if (user.following == undefined) {
+            return false;
+        }
+        if (user.following.includes(followerId.toString())) {
+            return true;
+        }
+        return false;
     }
 }
 

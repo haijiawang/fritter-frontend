@@ -235,7 +235,6 @@ router.get(
         userValidator.isUserLoggedIn,
     ],
     async (req: Request, res: Response) => {
-        console.log(req.query.userId);
         const userCommunities = await CommunityCollection.findByUser(req.query.userId as string);
         res.status(200).json({
             message: 'You have successfully found all communities you are a part of.',

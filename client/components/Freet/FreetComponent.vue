@@ -7,7 +7,9 @@
   >
     <header>
       <h3 class="author">
+        <router-link :to="{path: '/profile/' + freet.author}">
         @{{ freet.author }}
+        </router-link> 
       </h3>
       <div
         v-if="$store.state.username === freet.author"
@@ -99,7 +101,6 @@ export default {
       /**
        * Enables edit mode on this freet.
        */
-       console.log(this.$store.state)
       this.editing = true; // Keeps track of if a freet is being edited
       this.draft = this.freet.content; // The content of our current "draft" while being edited
     },
@@ -161,6 +162,8 @@ export default {
         if (!r.ok) {
           throw new Error(res.error);
         }
+        this.$set(this.alerts, 'Successfully saved to collection!', 'success'); 
+        setTimeout(() => this.$delete(this.alerts, 'Successfully saved to collection!'), 3000);
       } catch(e) {}
     },
     async request(params) {
@@ -199,9 +202,19 @@ export default {
 
 <style scoped>
 .freet {
-    border: 1px solid #111;
+    border: 1.8px solid rgba(101,119,134,0.5);
     padding: 20px;
     position: relative;
+    border-radius: 5px;
+    margin-bottom: 14px;
+}
+
+.freet .author {
+  font-weight: 500;
+}
+
+.freet .info {
+  font-size: 12px;
 }
 
 /* Dropdown Button */

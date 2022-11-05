@@ -104,4 +104,24 @@ router.get(
     }
 )
 
+/**
+ * @throws {403} - if the user is not logged in or not the author of
+ *                 of the freet
+ * @throws {404} - if the collection does not exist 
+ */
+router.get(
+    '/:collectionId?',
+    [
+        userValidator.isUserLoggedIn,
+        collectionValidator.isCollectionExists,
+    ],
+    async (req: Request, res: Response) => {
+        const freets = await CollectionDOCollection.getDetails(req.params.collectionId);
+        res.status(200).json({
+            message: 'You retrieved your freets successfully.',
+            freets: freets
+        });
+    }
+)
+
 export { router as collectionDORouter }

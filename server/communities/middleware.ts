@@ -31,7 +31,6 @@ const isValidCommunityName = (req: Request, res: Response, next: NextFunction) =
 * Checks if a community exists
 */
 const isCommunityExists = async (req: Request, res: Response, next: NextFunction) => {
-    console.log(req.params.communityId);
     const community = await CommunityModel.findOne({ _id: req.params.communityId });
     if (!community) {
         res.status(404).json({

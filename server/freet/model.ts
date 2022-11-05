@@ -1,7 +1,7 @@
 import { CollectionDO } from '../collections/model';
-import type {Types, PopulatedDoc, Document} from 'mongoose';
-import {Schema, model} from 'mongoose';
-import type {User} from '../user/model';
+import type { Types, PopulatedDoc, Document } from 'mongoose';
+import { Schema, model } from 'mongoose';
+import type { User } from '../user/model';
 
 /**
  * This file defines the properties stored in a Freet
@@ -12,6 +12,7 @@ import type {User} from '../user/model';
 export type Freet = {
   _id: Types.ObjectId; // MongoDB assigns each object this ID on creation
   authorId: Types.ObjectId;
+  author: string;
   dateCreated: Date;
   content: string;
   dateModified: Date;
@@ -22,6 +23,7 @@ export type Freet = {
 export type PopulatedFreet = {
   _id: Types.ObjectId; // MongoDB assigns each object this ID on creation
   authorId: User;
+  author: string;
   dateCreated: Date;
   content: string;
   dateModified: Date;
@@ -39,6 +41,10 @@ const FreetSchema = new Schema<Freet>({
     type: Schema.Types.ObjectId,
     required: true,
     ref: 'User'
+  },
+  author: {
+    type: String,
+    required: true
   },
   // The date the freet was created
   dateCreated: {

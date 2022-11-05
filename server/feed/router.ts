@@ -92,7 +92,6 @@ router.put(
         freetValidator.isUserExists
     ],
     async (req: Request, res: Response) => {
-        console.log(req.session.userId);
         const user = await FeedCollection.followUser(req.session.userId, req.params.userId);
         if (user == undefined) {
             res.status(401).json({
@@ -127,6 +126,20 @@ router.put(
         }
         res.status(200).json({
             message: 'You have successfully unfollowed the user.',
+        });
+    }
+)
+
+router.get(
+    '/isFollowing/:userId?',
+    [
+        userValidator.isUserLoggedIn,
+        freetValidator.isUserExists
+    ],
+    async (req: Request, res: Response) => {
+        const isFollowing = await FeedCollection.isFollowingUser(req.session.userId, req.params.userId);
+        res.status(200).json({
+            isFollowing: isFollowing
         });
     }
 )

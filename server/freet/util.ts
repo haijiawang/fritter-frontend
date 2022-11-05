@@ -1,6 +1,6 @@
-import type {HydratedDocument} from 'mongoose';
+import type { HydratedDocument } from 'mongoose';
 import moment from 'moment';
-import type {Freet, PopulatedFreet} from '../freet/model';
+import type { Freet, PopulatedFreet } from '../freet/model';
 
 // Update this if you add a property to the Freet type!
 type FreetResponse = {
@@ -9,8 +9,8 @@ type FreetResponse = {
   dateCreated: string;
   content: string;
   dateModified: string;
-  collectionId: string; 
-  communityId: string; 
+  collectionId: string;
+  communityId: string;
 };
 
 /**
@@ -34,14 +34,14 @@ const constructFreetResponse = (freet: HydratedDocument<Freet>): FreetResponse =
       versionKey: false // Cosmetics; prevents returning of __v property
     })
   };
-  const {username} = freetCopy.authorId;
+  const { username } = freetCopy.authorId;
   delete freetCopy.authorId;
   return {
     ...freetCopy,
     _id: freetCopy._id.toString(),
     author: username,
     dateCreated: formatDate(freet.dateCreated),
-    dateModified: formatDate(freet.dateModified), 
+    dateModified: formatDate(freet.dateModified),
     collectionId: freetCopy?.collectionId ?? "",
     communityId: freetCopy?.communityId ?? "",
   };

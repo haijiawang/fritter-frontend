@@ -160,6 +160,8 @@ export default {
         if (!r.ok) {
           throw new Error(res.error);
         }
+        this.$set(this.alerts, 'Successfully saved to collection!', 'success'); 
+        setTimeout(() => this.$delete(this.alerts, 'Successfully saved to collection!'), 3000);
       } catch(e) {}
     },
     async request(params) {
@@ -198,9 +200,19 @@ export default {
 
 <style scoped>
 .freet {
-    border: 1px solid #111;
+    border: 1.8px solid rgba(101,119,134,0.5);
     padding: 20px;
     position: relative;
+    border-radius: 5px;
+    margin-bottom: 14px;
+}
+
+.freet .author {
+  font-weight: 500;
+}
+
+.freet .info {
+  font-size: 12px;
 }
 
 /* Dropdown Button */

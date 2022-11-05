@@ -1,4 +1,4 @@
-import type {Request, Response} from 'express';
+import type { Request, Response } from 'express';
 import express from 'express';
 import FreetCollection from '../freet/collection';
 import UserCollection from './collection';
@@ -169,4 +169,72 @@ router.delete(
   }
 );
 
-export {router as userRouter};
+/**
+ * Get all users
+ *
+ * @name GET /api/users
+ *
+ * @return {string} - A success message
+ * @throws {403} - If the user is not logged in
+ */
+router.get(
+  '/',
+  [
+    userValidator.isUserLoggedIn
+  ],
+  async (req: Request, res: Response) => {
+    const allUsers = await UserCollection.getAll();
+    res.status(200).json({
+      users: allUsers
+    });
+  }
+);
+
+/**
+ * Get the users' following
+ *
+ * @name GET /api/users
+ *
+ * @return {string} - A success message
+ * @throws {403} - If the user is not logged in
+ */
+router.get(
+  '/following',
+  [
+    userValidator.isUserLoggedIn
+  ],
+  async (req: Request, res: Response) => {
+    const allFollowing = await UserCollection.getFollowing(req.session.userId);
+    res.status(200).json({
+      users: allFollowing
+    });
+  }
+);
+
+router.get(
+  '/username',
+  [
+    userValidator.isUserLoggedIn
+  ],
+  async (req: Request, res: Response) => {
+    const username = await UserCollection.getUsername(req.session.userId);
+    res.status(200).json({
+      username: username
+    });
+  }
+);
+
+router.get(
+  '/id/:userId?',
+  [
+    userValidator.isUserLoggedIn
+  ],
+  async (req: Request, res: Response) => {
+    const id = await UserCollection.getId(req.params.userId);
+    res.status(200).json({
+      id: id
+    });
+  }
+);
+
+export { router as userRouter };
