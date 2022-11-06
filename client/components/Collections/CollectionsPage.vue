@@ -1,27 +1,21 @@
 <!-- Collections page that displays the saved freets organized by collection -->
 
 <template>
-  <main>
+  <main v-if="$store.state.username">
     <section>
       <header>
-        <h2>
-          Viewing all Saved Collections for @{{ $store.state.username }}
-        </h2>
+        <h2>Viewing all Saved Collections for @{{ $store.state.username }}</h2>
       </header>
-      <section
-        v-if="$store.state.collections.length"
-      >
-      <div class="collections-grid">
-        <CollectionButtonComponent
-          v-for="collection in $store.state.collections"
-          :key="collection._id"
-          :collection="collection"
-        />
-      </div>  
+      <section v-if="$store.state.collections.length">
+        <div class="collections-grid">
+          <CollectionButtonComponent
+            v-for="collection in $store.state.collections"
+            :key="collection._id"
+            :collection="collection"
+          />
+        </div>
       </section>
-      <article
-        v-else
-      >
+      <article v-else>
         <h3>No collections found.</h3>
       </article>
     </section>
@@ -29,19 +23,23 @@
 </template>
 
 <script>
-import FreetComponent from '@/components/Freet/FreetComponent.vue';
-import CollectionComponent from '@/components/Collections/CollectionComponent.vue';
-import CollectionButtonComponent from '@/components/Collections/CollectionButtonComponent.vue';
+import FreetComponent from "@/components/Freet/FreetComponent.vue";
+import CollectionComponent from "@/components/Collections/CollectionComponent.vue";
+import CollectionButtonComponent from "@/components/Collections/CollectionButtonComponent.vue";
 
 export default {
-  name: 'CollectionsPage',
-  components: {FreetComponent, CollectionComponent, CollectionButtonComponent},
+  name: "CollectionsPage",
+  components: {
+    FreetComponent,
+    CollectionComponent,
+    CollectionButtonComponent,
+  },
   mounted() {
     this.fetchCollections();
   },
   methods: {
     async fetchCollections() {
-      const url = `/api/collections?userId=${this.$store.state.userId}`
+      const url = `/api/collections?userId=${this.$store.state.userId}`;
       try {
         const r = await fetch(url);
         const res = await r.json();
@@ -49,12 +47,11 @@ export default {
           throw new Error(res.error);
         }
 
-        this.$store.commit('updateCollections', res);
-      } catch(e) {}
-    }
-  }
+        this.$store.commit("updateCollections", res);
+      } catch (e) {}
+    },
+  },
 };
-
 </script>
 
 <style scoped>
@@ -63,14 +60,15 @@ section {
   flex-direction: column;
 }
 
-header, header > * {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+header,
+header > * {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 button {
-    margin-right: 10px;
+  margin-right: 10px;
 }
 
 section .scrollbox {

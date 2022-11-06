@@ -1,77 +1,94 @@
 <!-- Collections page that displays the saved freets organized by collection -->
 
 <template>
-  <main>
-    <section>
-      <header>
-        <h2>
-          Viewing all Saved Collections for @{{ $store.state.username }}
-        </h2>
-      </header>
-      <section
-        v-if="$store.state.collections.length"
-      >
-      <div class="collections-grid">
-        <CollectionButtonComponent
-          v-for="collection in $store.state.collections"
-          :key="collection._id"
-          :collection="collection"
-        />
-      </div>  
+  <div class="grid" v-if="$store.state.username">
+    <main>
+      <section v-if="$store.state.username">
+        <header>
+          <h2>@{{ $store.state.username }}'s communities</h2>
+        </header>
+        <CreateCommunityForm />
       </section>
-      <article
-        v-else
-      >
-        <h3>No collections found.</h3>
-      </article>
-    </section>
-  </main>
+      <section>
+        <section v-if="$store.state.communities.length">
+          <div class="collections-grid">
+            <CommunityButtonComponent
+              v-for="collection in $store.state.communities"
+              :key="collection._id"
+              :collection="collection"
+            />
+          </div>
+        </section>
+        <article v-else>
+          <h3>No collections found.</h3>
+        </article>
+      </section>
+    </main>
+    <div>
+      <FollowingComponent />
+    </div>
+  </div>
 </template>
 
 <script>
-import FreetComponent from '@/components/Freet/FreetComponent.vue';
-import CollectionComponent from '@/components/Collections/CollectionComponent.vue';
-import CollectionButtonComponent from '@/components/Collections/CollectionButtonComponent.vue';
+import FreetComponent from "@/components/Freet/FreetComponent.vue";
+import CollectionComponent from "@/components/Collections/CollectionComponent.vue";
+import CollectionButtonComponent from "@/components/Collections/CollectionButtonComponent.vue";
+import FollowingComponent from "@/components/Following/FollowingComponent.vue";
+import CreateCommunityForm from "@/components/Communities/CreateCommunityForm.vue";
+import CommunityButtonComponent from "@/components/Communities/CommunityButtonComponent.vue";
 
 export default {
-  name: 'CollectionsPage',
-  components: {FreetComponent, CollectionComponent, CollectionButtonComponent},
+  name: "CommunitiesPage",
+  components: {
+    FreetComponent,
+    CollectionComponent,
+    CollectionButtonComponent,
+    FollowingComponent,
+    CreateCommunityForm,
+    CommunityButtonComponent,
+  },
   mounted() {
-    this.$refs.getFreetsForm.submit();
-    this.fetchCollections();
+    this.fetchCommunities();
   },
   methods: {
-    async fetchCollections() {
-      const url = `/api/collections?userId=${this.$store.state.userId}`
+    async fetchCommunities() {
+      const url = `/api/communities?userId=${this.$store.state.userId}`;
       try {
         const r = await fetch(url);
         const res = await r.json();
         if (!r.ok) {
           throw new Error(res.error);
         }
-
-        this.$store.commit('updateCollections', res);
-      } catch(e) {}
-    }
-  }
+        this.$store.commit("updateCommunities", res.communities);
+      } catch (e) {}
+    },
+  },
 };
-
 </script>
 
 <style scoped>
+.grid {
+  display: grid;
+  grid-template-columns: 8fr 2fr;
+  column-gap: 2px;
+  row-gap: 1em;
+}
+
 section {
   display: flex;
   flex-direction: column;
 }
 
-header, header > * {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+header,
+header > * {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 button {
-    margin-right: 10px;
+  margin-right: 10px;
 }
 
 section .scrollbox {
