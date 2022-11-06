@@ -12,9 +12,10 @@ const store = new Vuex.Store({
     filter: null, // Username to filter shown freets by (null = show all)
     freets: [], // All freets created in the app
     username: null, // Username of the logged in user
-    userId: null, 
+    userId: null,
     alerts: {}, // global success/error messages encountered during submissions to non-visible forms
-    collections: []
+    collections: [],
+    communities: []
   },
   mutations: {
     alert(state, payload) {
@@ -60,6 +61,9 @@ const store = new Vuex.Store({
        * @param collections - Collections to store
        */
       state.collections = collections;
+    },
+    updateCommunities(state, communities) {
+      state.communities = communities;
     },
     async refreshFreets(state) {
       /**

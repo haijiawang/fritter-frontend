@@ -6,7 +6,8 @@ import LoginPage from './components/Login/LoginPage.vue';
 import NotFound from './NotFound.vue';
 import CollectionsPage from './components/Collections/CollectionsPage.vue';
 import CollectionList from './components/Collections/CollectionListPage.vue';
-import CommunitiesPage from './components/Communities/CommunitiesPage.vue'
+import CommunitiesPage from './components/Communities/CommunitiesPage.vue';
+import CommunityList from './components/Communities/CommunityListPage.vue';
 import ProfilePage from './components/Profile/ProfilePage.vue';
 
 Vue.use(VueRouter);
@@ -19,6 +20,7 @@ const routes = [
   { path: '/collections', name: 'Collections', component: CollectionsPage },
   { path: '/collections/:collectionId', name: 'CollectionList', component: CollectionList },
   { path: '/communities', name: 'Communities', component: CommunitiesPage },
+  { path: '/communities/:communityId', name: 'CommunityList', component: CommunityList },
   { path: '/profile/:username', name: 'Profile', component: ProfilePage }
 ];
 

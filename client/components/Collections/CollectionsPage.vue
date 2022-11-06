@@ -37,7 +37,6 @@ export default {
   name: 'CollectionsPage',
   components: {FreetComponent, CollectionComponent, CollectionButtonComponent},
   mounted() {
-    this.$refs.getFreetsForm.submit();
     this.fetchCollections();
   },
   methods: {

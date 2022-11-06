@@ -10,6 +10,7 @@
     <div class="right">
       <router-link to="/"> Home </router-link>
       <router-link to="/collections"> Saved Collections </router-link>
+      <router-link to="/communities"> Communities </router-link>
       <router-link v-if="$store.state.username" to="/account">
         Account
       </router-link>
