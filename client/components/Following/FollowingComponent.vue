@@ -1,6 +1,6 @@
 <template>
   <article class="freet">
-    <h2>You should follow</h2>
+    <h2 v-if="$store.state.username">You should follow</h2>
 
     <div class="collections-grid">
       <MiniUserComponent
@@ -44,7 +44,7 @@ export default {
 
         const f = await fetch(followingUrl, options);
         const fRes = await f.json();
-        
+
         const notFollowing = res.users.filter(
           (u) =>
             !fRes.users.includes(u.username) &&
@@ -56,8 +56,7 @@ export default {
         if (!r.ok) {
           throw new Error(res.error);
         }
-      } catch (e) {
-      }
+      } catch (e) {}
     },
   },
 };
