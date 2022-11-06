@@ -13,9 +13,9 @@
         <section v-if="$store.state.communities.length">
           <div class="collections-grid">
             <CommunityButtonComponent
-              v-for="collection in $store.state.communities"
-              :key="collection._id"
-              :collection="collection"
+              v-for="community in this.$store.state.communities"
+              :key="community._id"
+              :community="community"
             />
           </div>
         </section>
@@ -61,6 +61,7 @@ export default {
           throw new Error(res.error);
         }
         this.$store.commit("updateCommunities", res.communities);
+        console.log(this.$store.state.communities);
       } catch (e) {}
     },
   },

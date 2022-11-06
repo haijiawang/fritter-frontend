@@ -3,8 +3,8 @@
 <template>
   <article class="CommunityButtonComponent">
     <button>
-      <router-link :to="{ path: '/collections/' + collection._id }">
-        🔖 {{ collection.name }}
+      <router-link :to="{ path: '/communities/' + community._id }">
+        🏠 {{ community.name }}
       </router-link>
     </button>
   </article>
@@ -15,7 +15,7 @@ export default {
   name: "CommunityButtonComponent",
   props: {
     // Data from the stored collection
-    collection: {
+    community: {
       type: Object,
       required: true,
     },

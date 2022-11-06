@@ -140,9 +140,14 @@ class CommunityCollection {
         return community;
     }
 
-    static async findByUser(userId: Types.ObjectId | string): Promise<Array<string>> {
+    static async findByUser(userId: Types.ObjectId | string): Promise<Array<HydratedDocument<Community>>> {
         const user = await UserModel.findOne({ _id: userId });
-        return user.communities;
+        const communities = []
+        for (const id of user.communities) {
+            const community = await CommunityModel.findOne({ _id: id });
+            communities.push(community)
+        }
+        return communities;
     }
 }
 
