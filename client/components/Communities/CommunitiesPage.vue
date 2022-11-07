@@ -20,7 +20,7 @@
           </div>
         </section>
         <article v-else>
-          <h3>No collections found.</h3>
+          <h3>You are not in any communities. Find one to join using the suggestions on the right. ☺️</h3>
         </article>
       </section>
     </main>
@@ -61,7 +61,6 @@ export default {
           throw new Error(res.error);
         }
         this.$store.commit("updateCommunities", res.communities);
-        console.log(this.$store.state.communities);
       } catch (e) {}
     },
   },

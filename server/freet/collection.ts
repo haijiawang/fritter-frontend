@@ -33,7 +33,7 @@ class FreetCollection {
       dateModified: date,
       collectionId: ''
     });
-    
+
     await freet.save(); // Saves freet to MongoDB
     return freet.populate('authorId');
   }
@@ -55,7 +55,9 @@ class FreetCollection {
    */
   static async findAll(): Promise<Array<HydratedDocument<Freet>>> {
     // Retrieves freets and sorts them from most to least recent
-    return FreetModel.find({}).sort({ dateModified: -1 }).populate('authorId');
+    const allFreets = await FreetModel.find({}).sort({ dateModified: -1 }).populate('authorId');
+    const notCommunityFreets = allFreets.filter((freet) => !freet.communityId);
+    return notCommunityFreets;
   }
 
   /**
@@ -66,7 +68,9 @@ class FreetCollection {
    */
   static async findAllByUsername(username: string): Promise<Array<HydratedDocument<Freet>>> {
     const author = await UserCollection.findOneByUsername(username);
-    return FreetModel.find({ authorId: author._id }).sort({ dateModified: -1 }).populate('authorId');
+    const allFreets = await FreetModel.find({ authorId: author._id }).sort({ dateModified: -1 }).populate('authorId');
+    const notCommunityFreets = allFreets.filter((freet) => !freet.communityId);
+    return notCommunityFreets;
   }
 
   /**
@@ -121,9 +125,11 @@ class FreetCollection {
   }
   // write a forum post in community 
   static async addForum(authorId: Types.ObjectId | string, content: string, communityId: Types.ObjectId | string): Promise<HydratedDocument<Freet>> {
+    const author = await UserModel.findOne({ _id: authorId });
     const date = new Date();
     const freet = new FreetModel({
       authorId,
+      author: author.username,
       dateCreated: date,
       content,
       dateModified: date,
@@ -131,6 +137,8 @@ class FreetCollection {
       communityId
     });
     await freet.save(); // Saves freet to MongoDB
+    console.log(freet);
+    console.log('making forum post');
     const freetId = freet._id;
 
     // also need to save freet in community

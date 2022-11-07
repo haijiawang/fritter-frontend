@@ -21,7 +21,6 @@ export default {
   components: { MiniUserComponent },
   props: {},
   async mounted() {
-    console.log("mounted");
     this.getRecommendedUsers();
   },
   data() {
