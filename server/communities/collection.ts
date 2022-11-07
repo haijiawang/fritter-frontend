@@ -10,7 +10,7 @@ class CommunityCollection {
             owners: [userId],
             users: [userId],
             name: name,
-            public: false,
+            public: true,
         })
 
         const user = await UserModel.findOne({ _id: userId });
@@ -147,6 +147,11 @@ class CommunityCollection {
             const community = await CommunityModel.findOne({ _id: id });
             communities.push(community)
         }
+        return communities;
+    }
+
+    static async getAll(): Promise<Array<HydratedDocument<Community>>> {
+        const communities = await CommunityModel.find({});
         return communities;
     }
 }

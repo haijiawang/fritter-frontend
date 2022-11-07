@@ -20,12 +20,15 @@
           </div>
         </section>
         <article v-else>
-          <h3>You are not in any communities. Find one to join using the suggestions on the right. ☺️</h3>
+          <h3>
+            You are not in any communities. Find one to join using the
+            suggestions on the right. ☺️
+          </h3>
         </article>
       </section>
     </main>
     <div>
-      <FollowingComponent />
+      <JoinComponent />
     </div>
   </div>
 </template>
@@ -37,6 +40,7 @@ import CollectionButtonComponent from "@/components/Collections/CollectionButton
 import FollowingComponent from "@/components/Following/FollowingComponent.vue";
 import CreateCommunityForm from "@/components/Communities/CreateCommunityForm.vue";
 import CommunityButtonComponent from "@/components/Communities/CommunityButtonComponent.vue";
+import JoinComponent from "@/components/Communities/JoinComponent.vue";
 
 export default {
   name: "CommunitiesPage",
@@ -47,6 +51,7 @@ export default {
     FollowingComponent,
     CreateCommunityForm,
     CommunityButtonComponent,
+    JoinComponent,
   },
   mounted() {
     this.fetchCommunities();

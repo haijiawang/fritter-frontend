@@ -32,6 +32,26 @@ router.post(
 
 /**
  * @throws {403} - if the user is not logged in 
+ * @throws {400} - If the community name is invalid
+ */
+router.get(
+    '/all',
+    [
+        userValidator.isUserLoggedIn,
+    ],
+    async (req: Request, res: Response) => {
+        console.log('here');
+        const communities = await CommunityCollection.getAll();
+
+        res.status(201).json({
+            message: 'You retreived your communities successfully.',
+            communities: communities
+        });
+    }
+)
+
+/**
+ * @throws {403} - if the user is not logged in 
  * @throws {404} - if the community does not exist 
  * @throws {401} - if the user is not authorized as owner
  */
@@ -174,7 +194,7 @@ router.delete(
         communityValidator.isCommunityExists
     ],
     async (req: Request, res: Response) => {
-        const community = await CommunityCollection.deleteMember(req.params.communityId, req.params.userId);
+        const community = await CommunityCollection.deleteOwner(req.params.communityId, req.params.userId);
 
         res.status(200).json({
             message: 'You have successfully left the community.',
