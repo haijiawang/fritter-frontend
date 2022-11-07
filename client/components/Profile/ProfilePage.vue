@@ -13,6 +13,15 @@
         </div>
       </header>
     </section>
+    <section>
+      <section>
+        <FreetComponent
+          v-for="freet in freets"
+          :key="freet.id"
+          :freet="freet"
+        />
+      </section>
+    </section>
   </main>
 </template>
 
@@ -34,6 +43,7 @@ export default {
   },
   mounted() {
     this.isFollowingUser(this.$router.app._route.params.username);
+    this.getFreets();
   },
   updated() {
     this.isFollowingUser(this.$router.app._route.params.username);
@@ -42,9 +52,25 @@ export default {
     return {
       isFollowing: false,
       userId: "",
+      freets: [],
     };
   },
   methods: {
+    async getFreets() {
+      const username = this.$router.app._route.params.username;
+      const options = {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      };
+
+      const url = `/api/freets?author=${username}`;
+      try {
+        const r = await fetch(url, options);
+        const res = await r.json();
+        this.freets = res;
+        console.log(this.freets);
+      } catch (e) {}
+    },
     async isFollowingUser(username) {
       const options = {
         method: "GET",
