@@ -44,18 +44,25 @@ export default {
         const f = await fetch(followingUrl, options);
         const fRes = await f.json();
 
-        const notFollowing = res.users.filter(
-          (u) =>
-            !fRes.users.includes(u.username) &&
-            u.username !== this.$store.state.username
+        let notFollowing = res.users.filter(
+          (u) => u.username !== this.$store.state.username
         );
+        if (fRes.users) {
+          notFollowing = res.users.filter(
+            (u) =>
+              !fRes.users.includes(u._id) &&
+              u.username !== this.$store.state.username
+          );
+        }
 
         this.usersArray = notFollowing;
 
         if (!r.ok) {
           throw new Error(res.error);
         }
-      } catch (e) {}
+      } catch (e) {
+        console.log(e);
+      }
     },
   },
 };

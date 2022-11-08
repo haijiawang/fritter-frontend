@@ -80,7 +80,7 @@ export default {
   },
   methods: {
     async fetchCollections() {
-      const url = `/api/collections?userId=${$store.state.userId}`;
+      const url = `/api/collections?userId=${this.$store.state.userId}`;
       try {
         const r = await fetch(url);
         const res = await r.json();
